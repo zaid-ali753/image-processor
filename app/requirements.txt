@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+aiohttp
+pillow
+sqlalchemy
+pydantic
