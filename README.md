@@ -28,11 +28,11 @@ A FastAPI application for uploading and processing CSV files asynchronously. Inc
    ```
 
    python -m venv env
-3. Activate the Virtual Environment
+3. Activate the Virtual Environment<br>
 On Windows:
 
    ```.\env\Scripts\activate```
-On macOS/Linux:
+<br>On macOS/Linux:
    ```source env/bin/activate```
 4. Install Dependencies
    ```pip install -r requirements.txt ```
