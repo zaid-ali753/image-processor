@@ -29,10 +29,10 @@ A FastAPI application for uploading and processing CSV files asynchronously. Inc
 
    python -m venv env
 3. Activate the Virtual Environment<br>
-On Windows:
+On Windows:<br>
 
    ```.\env\Scripts\activate```
-<br>On macOS/Linux:
+<br>On macOS/Linux:<br>
    ```source env/bin/activate```
 4. Install Dependencies
    ```pip install -r requirements.txt ```
@@ -42,7 +42,6 @@ Update app/db/database.py with your database configuration.
 5.Running the Application
 
    ```Start the FastAPI application with Uvicorn:
-
    uvicorn app.main:app --reload
 ```
 
