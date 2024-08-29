@@ -1,4 +1,3 @@
-# app/api/endpoints/router.py
 from fastapi import APIRouter, UploadFile, File, BackgroundTasks, HTTPException, Depends
 from sqlalchemy.orm import Session
 import uuid
