@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File, BackgroundTasks, HTTPException, Depends
+from fastapi import APIRouter, UploadFile, File, BackgroundTasks, HTTPException, Depends, Request
 from sqlalchemy.orm import Session
 import uuid
 from app import crud, tasks
@@ -38,3 +38,11 @@ def get_status(request_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Request ID not found")
     
     return status
+
+
+@router.post("/notify")
+async def receive_webhook(request: Request):
+    payload = await request.json()
+    print("Webhook received:", payload)
+    # Handle the payload data as needed
+    return {"status": "received"}
