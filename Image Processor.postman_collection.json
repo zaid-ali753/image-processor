@@ -1,0 +1,281 @@
+{
+	"info": {
+		"_postman_id": "33b71d02-66c7-4148-9421-1f8a998ab102",
+		"name": "Image Processor",
+		"description": "StartFragment\n\nThe system processes image data from CSV files, compresses the images, and stores the results in a database. It provides asynchronous APIs for uploading the CSV file, checking the processing status, and receiving a callback via a webhook once the images are processed.\n\n#### 2\\. **Components**\n\n1. **Image Processing Service**:\n    \n    - **Function**: Compresses images by 50% of their original quality.\n        \n    - **Integration**: The service is called asynchronously by the worker processes to handle image compression.\n        \n2. **Webhook Handling**:\n    \n    - **Function**: Receives callbacks from the image processing service once all images are processed. It updates the processing status and stores the output image URLs in the database.\n        \n3. **Database Interaction**:\n    \n    - **Function**: Stores product data, tracks the status of each processing request, and manages input/output image URLs.\n        \n    - **Schema**: A relational database (SQL) is used to track products, image URLs, and request statuses.\n        \n4. **API Endpoints**:\n    \n    - **Upload API**:\n        \n        - **Endpoint**: `/upload`\n            \n        - **Function**: Accepts a CSV file, validates the format, stores the initial data in the database, and returns a unique request ID.\n            \n    - **Status API**:\n        \n        - **Endpoint**: `/status/{request_id}`\n            \n        - **Function**: Checks the processing status using the request ID and returns the current status along with any available output data.\n            \n    - **Webhook API**:\n        \n        - **Endpoint**: `/webhook`\n            \n        - **Function**: Receives a POST request from the image processing service after completion. Updates the database with the output image URLs and marks the request as complete.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37572205"
+	},
+	"item": [
+		{
+			"name": "Upload Image",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/EdiSON/Desktop/Sample_File - Sheet1.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/image/upload/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"image",
+						"upload",
+						""
+					]
+				},
+				"description": "StartFragment\n\n### **Upload CSV**\n\n#### **Endpoint**\n\n- **Method:** `POST`\n    \n- **URL:** `http://localhost:8000/image/upload/`\n    \n\n#### **Description**\n\nUploads a CSV file to the server. The file is saved in the `temp` directory and processed asynchronously.\n\n#### **Request**\n\n- **Headers:**\n    \n    - `Content-Type: multipart/form-data`\n        \n- **Body:**\n    \n    - Type: `form-data`\n        \n    - Key: `file` (type: `File`)\n        \n        - Choose a CSV file from your local machine.\n            \n\n#### **Response**\n\n- **Status Code:** `200 OK`"
+			},
+			"response": [
+				{
+					"name": "http://127.0.0.1:8000/image/upload/",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/EdiSON/Desktop/Sample_File - Sheet1.csv"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/image/upload/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"image",
+								"upload",
+								""
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "date",
+							"value": "Thu, 29 Aug 2024 18:27:39 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "21"
+						},
+						{
+							"key": "content-type",
+							"value": "text/plain; charset=utf-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\r\n    \"request_id\": \"3971632e-1bf4-4bb0-bb23-b0371403f063\"\r\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Status",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/image/status/3971632e-1bf4-4bb0-bb23-b0371403f063",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"image",
+						"status",
+						"3971632e-1bf4-4bb0-bb23-b0371403f063"
+					]
+				},
+				"description": "StartFragment\n\n### **Check Processing Status**\n\n#### **Endpoint**\n\n- **Method:** `GET`\n    \n- **URL:** `http://localhost:8000/image/status/{request_id}`\n    \n\n#### **Description**\n\nRetrieves the processing status of a previously uploaded CSV file using the provided request ID.\n\n#### **Request**\n\n- **Headers:**\n    \n    - `Content-Type: application/json`\n        \n- **Path Parameter:**\n    \n    - `request_id` (string): The unique identifier returned from the upload endpoint.\n        \n\n#### **Response**\n\n- **Status Code:** `200 OK` or `404 Not Found`"
+			},
+			"response": [
+				{
+					"name": "http://localhost:8000/image/status/3971632e-1bf4-4bb0-bb23-b0371403f063",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/image/status/3971632e-1bf4-4bb0-bb23-b0371403f063",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"image",
+								"status",
+								"3971632e-1bf4-4bb0-bb23-b0371403f063"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Thu, 29 Aug 2024 18:35:34 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "33"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"request_id\": \"3971632e-1bf4-4bb0-bb23-b0371403f063\",\n    \"status\": \"Processing\",\n    \"message\": \"Your CSV file is being processed.\"\n}\n"
+				}
+			]
+		},
+		{
+			"name": "Webhook",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"request_id\": \"3971632e-1bf4-4bb0-bb23-b0371403f063\",\n  \"status\": \"Completed\",\n  \"file_location\": \"temp/3971632e-1bf4-4bb0-bb23-b0371403f063.csv\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/image/webhook",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"image",
+						"webhook"
+					]
+				},
+				"description": "StartFragment\n\n### **Webhook Notification**\n\n#### **Endpoint**\n\n- **Method:** `POST`\n    \n- **URL:** `http://localhost:8000/webhook` (replace with your actual webhook URL)\n    \n\n#### **Description**\n\nReceives notifications about the processing status from the server.\n\n#### **Request**\n\n- **Headers:**\n    \n    - `Content-Type: application/json`\n        \n- **Body:**\n    \n    - Type: `raw`\n        \n    - Format: `JSON`"
+			},
+			"response": [
+				{
+					"name": "http://localhost:8000/image/webhook",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"request_id\": \"3971632e-1bf4-4bb0-bb23-b0371403f063\",\n  \"status\": \"Completed\",\n  \"file_location\": \"temp/3971632e-1bf4-4bb0-bb23-b0371403f063.csv\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/image/webhook",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"image",
+								"webhook"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "date",
+							"value": "Thu, 29 Aug 2024 18:40:43 GMT"
+						},
+						{
+							"key": "server",
+							"value": "uvicorn"
+						},
+						{
+							"key": "content-length",
+							"value": "22"
+						},
+						{
+							"key": "content-type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n  \"message\": \"Webhook received successfully\"\n}"
+				}
+			]
+		}
+	]
+}
