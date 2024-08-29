@@ -21,34 +21,27 @@ A FastAPI application for uploading and processing CSV files asynchronously. Inc
 
 1. **Clone the Repository**
 
-   ```bash
+   ```
    git clone https://github.com/your-username/image-processor.git
    cd image-processor
 2. Create a Virtual Environment
-   ```bash
+   ```
 
    python -m venv env
 3. Activate the Virtual Environment
-   ```On Windows:
+On Windows:
 
-   bash
-   .\env\Scripts\activate
-   On macOS/Linux:
-
-   bash
-   source env/bin/activate
+   ```.\env\Scripts\activate```
+On macOS/Linux:
+   ```source env/bin/activate```
 4. Install Dependencies
-   ```bash
-
-   pip install -r requirements.txt
+   ```pip install -r requirements.txt ```
 Configuration
 Update app/db/database.py with your database configuration.
 
 5.Running the Application
 
    ```Start the FastAPI application with Uvicorn:
-
-   bash
 
    uvicorn app.main:app --reload
 ```
@@ -69,7 +62,7 @@ Headers:
 Content-Type: multipart/form-data
 Body:
 
-Form-data with a key file (Type: file, Description: The CSV file to upload)
+Form-data with a key file (Type: file, Description: The CSV file to upload)<br>
 Response:
  ```Success (200 OK):
 
@@ -89,7 +82,7 @@ Method: GET
 
 URL Params:
 
-request_id (string): The ID of the request to check the status for.
+request_id (string): The ID of the request to check the status for.<br>
 Response:
 
    ```Success (200 OK):
@@ -105,7 +98,7 @@ Response:
    }
 ```
 Webhook Notifications
-Endpoint: Configure a webhook URL to receive status updates.
+Endpoint: Configure a webhook URL to receive status updates.<br>
 
 Method: POST
 
@@ -116,6 +109,6 @@ Method: POST
        "details": "string"
    }
    ```
-Troubleshooting
+Troubleshooting<br>
 ModuleNotFoundError: Ensure all dependencies are installed. Use pip install -r requirements.txt to install required packages.
 FileNotFoundError: Ensure the temp directory exists or is correctly created. Verify directory permissions.
