@@ -4,3 +4,4 @@ aiohttp
 pillow
 sqlalchemy
 pydantic
+psycopg2
